@@ -11,9 +11,13 @@ export default {
 </script>
 
 <style scoped>
+.header {
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
 .image-header {
     max-height: 50px;
     width: auto;
-    text-align: center;
 }
 </style>

@@ -1,66 +1,55 @@
 <template>
-  <section class="container">
-    <div>
-      <logo/>
-      <h1 class="title">
-        nuxt
-      </h1>
-      <h2 class="subtitle">
-        My scrumtrulescent Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
-    </div>
-  </section>
+    <section class="container">
+        <div v-for="post in posts" :key="post.id" class="post-item">
+            <p class="title">
+                <strong>
+                    <nuxt-link :to="'/content/' + post.id">{{ post.title.rendered }}</nuxt-link>
+                </strong>
+            </p>
+
+            <p v-html="post.excerpt.rendered">
+            </p>
+        </div>
+    </section>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
 
 export default {
-  components: {
-    Logo
-  }
+    layout: 'blog',
+    data () {
+        return {
+            posts: []
+        }
+    },
+    // async mounted () {
+    //     this.posts = await this.$axios.$get('https://blog.skooldio.com/wp-json/wp/v2/posts')
+    // },
+    async asyncData ({app}) {
+        return {
+            posts: await app.$axios.$get('https://blog.skooldio.com/wp-json/wp/v2/posts')
+        }
+    }
 }
 </script>
 
-<style>
+<style scoped>
 
 .container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+    margin: 1rem;
+    min-height: 100vh;
 }
 
 .title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+    font-size: 2rem;
 }
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
+.post-item {
+    background-color: lightgray;
+    padding: 1rem;
+    margin: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
 }
 
-.links {
-  padding-top: 15px;
-}
 </style>
